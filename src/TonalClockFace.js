@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Clock from 'react-clock';
+import 'react-clock/dist/Clock.css';
 
 export default class TonalClockFace extends Component {
   constructor(props) {
@@ -6,24 +8,28 @@ export default class TonalClockFace extends Component {
   }
 
   componentDidMount() {
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.innerHTML = `
-    let notesAdded = false;
-    if (!notesAdded) {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.innerHTML = `
+    function addNotestoClock () {
       const notes = ['C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
       let numbers = document.getElementsByClassName("react-clock__mark__number");
       for (let i = 0; i < numbers.length; i++) {
         numbers.item(i).innerHTML = (i + 1) + '<br/>' + notes[i];
       }
-      notesAdded = true;
-    }    
+    }
+    addNotestoClock();
     `;
-    this.instance.appendChild(s);
+    document.body.appendChild(script);
+    document.body.removeChild(script);
   }
 
   render() {
-    return <div ref={el => (this.instance = el)} />;
+    return <Clock 
+    value={this.props.time}
+    size={500}
+    renderNumbers={true}
+  />;
   }
 }

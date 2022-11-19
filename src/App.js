@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Clock from 'react-clock';
 import './App.css';
-import 'react-clock/dist/Clock.css';
+import TonalClockFace from './TonalClockFace';
 
 function App() {
   const [now, setValue] = useState(new Date());
@@ -17,11 +16,7 @@ function App() {
   return (
     <div>
       <h1>Current Time</h1>
-      <Clock 
-        value={now}
-        size={500}
-        renderNumbers={true}
-      />
+      <TonalClockFace time={now} />
     </div>
   );
 }
