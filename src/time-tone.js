@@ -7,7 +7,7 @@ export default class TimeTone {
 
     constructor(properties) {
         if (properties.note) {
-            const noteData = properties.note.match(/^(.+)(\d)$/);
+            const noteData = properties.note.match(/^(\w[#b]?)(\d)$/);
             if (noteData && noteData instanceof Array && noteData.length === 3) {
                 if (TimeTone.notes.includes(noteData[1])) {
                     this.note = noteData[1];
