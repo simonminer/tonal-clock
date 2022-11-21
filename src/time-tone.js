@@ -1,26 +1,24 @@
 export default class TimeTone {
     static notes = ['C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
 
-    note = 'C';
-    octave = 4;
+    note = '';
+    octave = -1;
     duration = -1;
+    unit = '';
 
-    constructor(properties) {
-        if (properties.note) {
-            const noteData = properties.note.match(/^(\w[#b]?)(\d)$/);
-            if (noteData && noteData instanceof Array && noteData.length === 3) {
-                if (TimeTone.notes.includes(noteData[1])) {
-                    this.note = noteData[1];
-                }
-                const octave = parseInt(noteData[2]);
-                if (octave >= 1 && octave <= 8) {
-                    this.octave = octave;
-                }
-            }
-        }
+    constructor(clockNumber) {
+        this.note = this.clockNumberToNote(clockNumber);
     }
 
     noteName() {
         return this.note + this.octave;
+    }
+
+    clockNumberToNote(number) {
+        let note = undefined;
+        if (number > 0 && number <= TimeTone.notes.length) {
+            note = TimeTone.notes[number - 1];
+        }
+        return note;
     }
 }
