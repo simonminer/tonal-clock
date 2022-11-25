@@ -16,10 +16,6 @@ describe('TimeTone tests', function() {
                 tone.octave = octave;
                 const noteName = tone.note + octave;
                 expect(tone.noteName()).toBe(noteName);
-
-                const noteValue = octave * TimeTone.notes.length + TimeTone.notes.indexOf(note);
-                expect(tone.noteValue(note, octave)).toBe(noteValue);
-
             }          
         }
     });
