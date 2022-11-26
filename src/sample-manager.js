@@ -2,8 +2,19 @@
 // Inspired by https://teropa.info/blog/2016/07/28/javascript-systems-music.html#building-a-simple-sampler
 export default class SampleManager {
 
+  /**
+   * Static list of the 12 note names.
+   */
   static notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+  /**
+   * Number of notes in an octave (12).
+   */
   static notesPerOctave = SampleManager.notes.length;
+
+  /**
+   * The maximum octave number.
+   */
   static maxOctave = 8;
 
   /**
@@ -12,9 +23,16 @@ export default class SampleManager {
    * and url of the sample.
    */
   samples = {};
+
+
+  /**
+   * AudioContext to manage audio buffer manipulation and playback.
+   */
+  audioContext;// = new AudioContext();
   
-  constructor(samples) {
+  constructor(samples, audioContext = null) {
     this.samples = samples;
+    this.audioContext = audioContext;
   }
 
   /**

@@ -1,4 +1,5 @@
 import SampleManager from './sample-manager.js';
+import mockaudioContext from './mock-audio-context.js';
 
 var samples = [
   { note: 'C', octave: 3, url: 'Violas_c3.wav'},
@@ -9,7 +10,7 @@ var samples = [
 ];
 var manager = undefined;
 beforeAll(() => {
-  manager = new SampleManager(samples);
+  manager = new SampleManager(samples, new mockaudioContext());
 });
 
 describe('SampleManager tests', () => {
