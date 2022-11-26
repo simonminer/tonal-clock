@@ -35,7 +35,7 @@ export default class TonalClockFace extends Component {
     script.async = true;
     script.innerHTML = `
     function addNotes () {
-      const notes = ['C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+      const notes = ['C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B','C'];
       let numbers = document.getElementsByClassName("react-clock__mark__number");
       for (let i = 0; i < numbers.length; i++) {
         numbers.item(i).innerHTML = (i + 1) + '<br/><span class="clock-note">' + notes[i] + '</span>';
