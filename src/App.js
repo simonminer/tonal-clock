@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import TonalClockFace from './TonalClockFace';
 
-function App() {
-  const now = new Date();
-  now.setHours(now.getHours() + 3);
-  return (
-    <div>
-      <h1>Current Time</h1>
-      <TonalClockFace />
-    </div>
-  );
-}
+export default class App extends Component {
 
-export default App;
+  constructor(props) {
+    super(props);
+  }
+  
+  render() {
+    return (
+      <div>
+        <h1>Current Time</h1>
+        <TonalClockFace />
+      </div>
+    );
+  }
+}
