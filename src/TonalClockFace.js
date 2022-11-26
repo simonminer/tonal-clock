@@ -70,6 +70,7 @@ export default class TonalClockFace extends Component {
     value={this.now}
     size={500}
     renderNumbers={true}
+    className="tonal-clock-face"
   />;
   }
 }
