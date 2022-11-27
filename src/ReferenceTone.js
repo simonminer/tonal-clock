@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Sample from './sample';
+import {Howl} from 'howler';
 
 export default class ReferenceTone extends Component {
 
@@ -13,15 +14,22 @@ export default class ReferenceTone extends Component {
    */
   noteName = 'C2';
 
+  /**
+   * The sound buffer containing the reference tone.
+   */
+  sound;
 
   constructor(props) {
     super(props);
-    const audioContext = new AudioContext();
-    this.sample = new Sample(this.samplePath, audioContext);
+    this.sound = new Howl({
+      src: [this.samplePath],
+      volume: 0.5
+      //loop: true
+    });
   }
 
   componentDidMount() {
-    this.sample.play();
+    this.sound.play();
   }
 
   componentWillUnmount() {
@@ -29,7 +37,7 @@ export default class ReferenceTone extends Component {
 
   render() {
     return (
-      <div id="reference-note">{this.noteName}</div>
+      <div id="reference-note">Reference: {this.noteName}</div>
     );
   }
 }
