@@ -8,6 +8,6 @@ beforeEach(() => {
 
 test('renders learn react link', () => {
   render(<App />);
-  const linkElement = screen.getByText(/current time/i);
-  expect(linkElement).toBeInTheDocument();
+  const headingElement = screen.getByText(/tonal clock/i);
+  expect(headingElement).toBeInTheDocument();
 });
