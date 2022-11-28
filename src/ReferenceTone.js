@@ -16,6 +16,11 @@ export default class ReferenceTone extends Component {
   noteName = 'C2';
 
   /**
+   * Duration of looped note (in miliseconds).
+   */
+  noteDuration = 4000;
+
+  /**
    * The sound buffer containing the reference tone.
    */
   sound;
@@ -30,11 +35,29 @@ export default class ReferenceTone extends Component {
     this.sound = new Howl({
       src: [this.samplePath],
       volume: 0.5,
-      //loop: true,
       sprite: {
-        reference: [0, 4000, true]
+        reference: [0, this.noteDuration, true]
       }
     });
+  }
+
+  /**
+   * Determine how long the lead in sound should play for.
+   * @param {Date} time The time tht the lead in sound should begin playing.
+   * @return {int} Number of miliseconds that lead in sound should play.
+   */
+  computeLeadInDuration(time) {
+    const leadInDuration = this.noteDuration - ((time.getSeconds() % this.noteDuration) * 1000 + time.getMilliseconds());
+    return leadInDuration;
+  }
+
+  /**
+   * Play the reference tone so that
+   * the looped tone (re)starts every
+   * fourth second.
+   */
+  play() {
+
   }
 
   componentDidMount() {
