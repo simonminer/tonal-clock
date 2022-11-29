@@ -26,6 +26,11 @@ export default class ReferenceTone extends Component {
   volume = 0.5;
 
   /**
+   * The initial version of the reference tone when it starts playing.
+   */
+   initialSound;
+   
+  /**
    * The sound buffer containing the reference tone.
    */
   sound;
@@ -41,7 +46,7 @@ export default class ReferenceTone extends Component {
       src: [this.samplePath],
       volume: this.volume,
       sprite: {
-        reference: [0, this.noteDuration, true]
+        reference: [0, this.noteDuration, true],
       }
     });
   }
@@ -64,29 +69,32 @@ export default class ReferenceTone extends Component {
   play() {
     // Play the tone just long enough for it to lock into
     // place when it begins looping.
-    const initialToneDuration = this.computeInitialToneDuration(new Date());
-    const initialSound = new Howl({
+    const initialSoundDuration = this.computeInitialToneDuration(new Date());
+    this.initialSound = new Howl({
       src: [this.samplePath],
       volume: this.volume,
       sprite: {
-        initial: [0, initialToneDuration, false]
+        initial: [0, initialSoundDuration, false]
       }
     });
-    initialSound.play('initial');
+    this.initialSound.play('initial');
     this.isPlaying = true;
 
     // Finish playing the initial tone before
     // starting the normal looping tone.
     setTimeout( () => {
-      this.sound.play('reference');
-    }, initialToneDuration);
+      if (this.isPlaying) {
+        this.sound.play('reference');
+      }
+    }, initialSoundDuration);
   }
 
   /**
    * Stop playing the tone.
    */
   stop() {
-    this.sound.stop('reference');
+    this.initialSound.stop();
+    this.sound.stop();
     this.isPlaying = false;
   }
 
@@ -95,16 +103,14 @@ export default class ReferenceTone extends Component {
   }
 
   componentWillUnmount() {
-    if (this.isPlaying) {
-      this.stop();
-    }
+    this.stop();
   }
   toggleReferenceTone(event) {
     if (event.target.checked) {
       this.play('reference');
     }
     else {
-      this.sound.stop();
+      this.stop();
     }
   }
 
