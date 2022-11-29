@@ -21,6 +21,11 @@ export default class ReferenceTone extends Component {
   noteDuration = 4000;
 
   /**
+   * Percentage of full volume the tone should play at.
+   */
+  volume = 0.5;
+
+  /**
    * The sound buffer containing the reference tone.
    */
   sound;
@@ -34,7 +39,7 @@ export default class ReferenceTone extends Component {
     super(props);
     this.sound = new Howl({
       src: [this.samplePath],
-      volume: 0.5,
+      volume: this.volume,
       sprite: {
         reference: [0, this.noteDuration, true]
       }
@@ -46,8 +51,8 @@ export default class ReferenceTone extends Component {
    * @param {Date} time The time tht the lead in sound should begin playing.
    * @return {int} Number of miliseconds that lead in sound should play.
    */
-  computeLeadInDuration(time) {
-    const leadInDuration = this.noteDuration - ((time.getSeconds() % this.noteDuration) * 1000 + time.getMilliseconds());
+  computeInitialToneDuration(time) {
+    const leadInDuration = this.noteDuration - (((time.getSeconds() * 1000) % this.noteDuration) + time.getMilliseconds());
     return leadInDuration;
   }
 
@@ -57,28 +62,50 @@ export default class ReferenceTone extends Component {
    * fourth second.
    */
   play() {
+    // Play the tone just long enough for it to lock into
+    // place when it begins looping.
+    const initialToneDuration = this.computeInitialToneDuration(new Date());
+    const initialSound = new Howl({
+      src: [this.samplePath],
+      volume: this.volume,
+      sprite: {
+        initial: [0, initialToneDuration, false]
+      }
+    });
+    initialSound.play('initial');
+    this.isPlaying = true;
 
+    // Finish playing the initial tone before
+    // starting the normal looping tone.
+    setTimeout( () => {
+      this.sound.play('reference');
+    }, initialToneDuration);
+  }
+
+  /**
+   * Stop playing the tone.
+   */
+  stop() {
+    this.sound.stop('reference');
+    this.isPlaying = false;
   }
 
   componentDidMount() {
-    this.sound.play('reference');
-    this.isPlaying = true;
+    this.play('reference');
   }
 
   componentWillUnmount() {
     if (this.isPlaying) {
-      this.sound.stop('reference');
-      this.isPlaying = false;
+      this.stop();
     }
   }
   toggleReferenceTone(event) {
     if (event.target.checked) {
-      this.sound.play('reference');
+      this.play('reference');
     }
     else {
       this.sound.stop();
     }
-    this.isPlaying = !this.IsPlaying;
   }
 
   render() {
