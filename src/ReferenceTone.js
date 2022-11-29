@@ -29,7 +29,7 @@ export default class ReferenceTone extends Component {
    * The initial version of the reference tone when it starts playing.
    */
    initialSound;
-   
+
   /**
    * The sound buffer containing the reference tone.
    */
@@ -46,7 +46,7 @@ export default class ReferenceTone extends Component {
       src: [this.samplePath],
       volume: this.volume,
       sprite: {
-        reference: [0, this.noteDuration, true],
+        reference: [0, this.noteDuration, true]
       }
     });
   }
@@ -99,7 +99,7 @@ export default class ReferenceTone extends Component {
   }
 
   componentDidMount() {
-    this.play('reference');
+    this.play();
   }
 
   componentWillUnmount() {
@@ -107,7 +107,7 @@ export default class ReferenceTone extends Component {
   }
   toggleReferenceTone(event) {
     if (event.target.checked) {
-      this.play('reference');
+      this.play();
     }
     else {
       this.stop();
