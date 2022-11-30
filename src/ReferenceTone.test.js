@@ -7,6 +7,9 @@ it('creates ReferenceTone object', () => {
   const referenceTone = new ReferenceTone();
   expect(referenceTone instanceof ReferenceTone).toBe(true);
   expect(referenceTone.isPlaying).toBe(false);
+  const noteName = 'C2';
+  expect(Object.keys(referenceTone.samplePath)[0]).toBe(noteName);
+  expect(Object.keys(referenceTone.sound)[0]).toBe(noteName);
 });
 
 it('renders reference tone', () => {

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import {Howl} from 'howler';
 import { FormControlLabel, Switch } from '@mui/material';
 
-
 export default class ReferenceTone extends Component {
 
   /**
-   * Path/URI to the reference tone sample file.
+   * Map of reference note name to its corresponding 
+   * sample file path/URI.
    */
-  samplePath = 'samples/reference/basses-sus-c2-PB-loop.wav';
+  samplePath = {
+    C2: 'samples/reference/basses-sus-c2-PB-loop.wav'
+  };
 
   /**
    * Name of the reference note
@@ -36,9 +38,9 @@ export default class ReferenceTone extends Component {
    initialSound;
 
   /**
-   * The sound buffer containing the reference tone.
+   * Map of reference note name to its sound buffer containing its tone.
    */
-  sound;
+  sound = {};
 
   /**
    * Boolean flag indicating whether or not the reference ton is currently playing.
@@ -49,12 +51,14 @@ export default class ReferenceTone extends Component {
     super(props);
     this.startTime = props && props.startTime !== undefined ? props.startTime : new Date();
 
-    this.sound = new Howl({
-      src: [this.samplePath],
-      volume: this.volume,
-      sprite: {
-        reference: [0, this.noteDuration, true]
-      }
+    Object.keys(this.samplePath).forEach((noteName) => {
+      this.sound[noteName] = new Howl({
+        src: [this.samplePath[noteName]],
+        volume: this.volume,
+        sprite: {
+          reference: [0, this.noteDuration, true]
+        }
+      });
     });
   }
 
@@ -72,8 +76,9 @@ export default class ReferenceTone extends Component {
    * Play the reference tone so that
    * the looped tone (re)starts every
    * fourth second.
+   * @param {String} noteName The name of the note that should be played.
    */
-  play() {
+  play(noteName = this.noteName) {
 
     // Make sure we have an up-to-date start time.
     if (!this.startTime) {
@@ -84,7 +89,7 @@ export default class ReferenceTone extends Component {
     // place when it begins looping.
     const initialSoundDuration = this.computeInitialToneDuration(this.startTime);
     this.initialSound = new Howl({
-      src: [this.samplePath],
+      src: [this.samplePath[noteName]],
       volume: this.volume,
       sprite: {
         initial: [0, initialSoundDuration, false]
@@ -97,7 +102,7 @@ export default class ReferenceTone extends Component {
     // starting the normal looping tone.
     setTimeout( () => {
       if (this.isPlaying) {
-        this.sound.play('reference');
+        this.sound[noteName].play('reference');
       }
     }, initialSoundDuration);
   }
@@ -107,18 +112,21 @@ export default class ReferenceTone extends Component {
    */
   stop() {
     this.initialSound.stop();
-    this.sound.stop();
+    Object.keys(this.sound).forEach((noteName) => {
+      this.sound[noteName].stop();
+    });
     this.isPlaying = false;
     this.startTime = undefined;
   }
 
   componentDidMount() {
-    this.play();
+    this.play(this.noteName);
   }
 
   componentWillUnmount() {
     this.stop();
   }
+
   toggleReferenceTone(event) {
     if (event.target.checked) {
       this.play();
