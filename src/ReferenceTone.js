@@ -16,7 +16,7 @@ export default class ReferenceTone extends Component {
   noteName = 'C2';
 
   /**
-   * Duration of looped note (in miliseconds).
+   * Duration of looped note (in milliseconds).
    */
   noteDuration = 4000;
 
@@ -61,7 +61,7 @@ export default class ReferenceTone extends Component {
   /**
    * Determine how long the lead in sound should play for.
    * @param {Date} time The time tht the lead in sound should begin playing.
-   * @return {int} Number of miliseconds that lead in sound should play.
+   * @return {int} Number of milliseconds that lead in sound should play.
    */
   computeInitialToneDuration(time) {
     const leadInDuration = this.noteDuration - (((time.getSeconds() * 1000) % this.noteDuration) + time.getMilliseconds());

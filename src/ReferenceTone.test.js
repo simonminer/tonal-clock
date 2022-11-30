@@ -23,9 +23,9 @@ it('computes initial tone duration', () => {
     time.setMilliseconds(0);
     var initialToneSeconds = referenceTone.noteDuration - (time.getSeconds()  * 1000) % referenceTone.noteDuration;
     expect(referenceTone.computeInitialToneDuration(time)).toBe(initialToneSeconds);
-    const miliseconds = Math.floor(Math.random() * 1000);
-    time.setMilliseconds(miliseconds);
-    initialToneSeconds -= miliseconds;
+    const milliseconds = Math.floor(Math.random() * 1000);
+    time.setMilliseconds(milliseconds);
+    initialToneSeconds -= milliseconds;
     expect(referenceTone.computeInitialToneDuration(time)).toBe(initialToneSeconds);
   }
 });
