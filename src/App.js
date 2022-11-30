@@ -14,11 +14,17 @@ export default class App extends Component {
   }
 
   render() {
+
+    // Synchronize the start time of all components
+    // to the start of the current second.
+    var startTime = new Date();
+    startTime.setMilliseconds(0);
+
     return (
       <div>
         <h1>Tonal Clock</h1>
-        <ReferenceTone />
-        <TonalClockFace />
+        <ReferenceTone startTime={startTime} />
+        <TonalClockFace time={startTime} />
       </div>
     );
   }

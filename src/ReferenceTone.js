@@ -26,6 +26,11 @@ export default class ReferenceTone extends Component {
   volume = 0.5;
 
   /**
+   * Time at which the tone shoudld being playing.
+   */
+  startTime = new Date();
+
+  /**
    * The initial version of the reference tone when it starts playing.
    */
    initialSound;
@@ -42,6 +47,8 @@ export default class ReferenceTone extends Component {
 
   constructor(props) {
     super(props);
+    this.startTime = props && props.startTime !== undefined ? props.startTime : new Date();
+
     this.sound = new Howl({
       src: [this.samplePath],
       volume: this.volume,
@@ -67,9 +74,15 @@ export default class ReferenceTone extends Component {
    * fourth second.
    */
   play() {
+
+    // Make sure we have an up-to-date start time.
+    if (!this.startTime) {
+      this.startTime = new Date();
+    }
+
     // Play the tone just long enough for it to lock into
     // place when it begins looping.
-    const initialSoundDuration = this.computeInitialToneDuration(new Date());
+    const initialSoundDuration = this.computeInitialToneDuration(this.startTime);
     this.initialSound = new Howl({
       src: [this.samplePath],
       volume: this.volume,
@@ -78,7 +91,7 @@ export default class ReferenceTone extends Component {
       }
     });
     this.initialSound.play('initial');
-    this.isPlaying = true;
+    this.isPlaying = true
 
     // Finish playing the initial tone before
     // starting the normal looping tone.
@@ -96,6 +109,7 @@ export default class ReferenceTone extends Component {
     this.initialSound.stop();
     this.sound.stop();
     this.isPlaying = false;
+    this.startTime = undefined;
   }
 
   componentDidMount() {

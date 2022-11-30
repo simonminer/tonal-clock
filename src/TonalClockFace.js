@@ -8,7 +8,7 @@ export default class TonalClockFace extends Component {
    * A Date object representing the current date and time
    * according to this clock.
    */
-  now;
+  time;
 
   /**
    * Interval used to increment the clock;
@@ -23,7 +23,7 @@ export default class TonalClockFace extends Component {
 
   constructor(props) {
     super(props);
-    this.now = props.time !== undefined ? props.time : new Date();
+    this.time = props.time !== undefined ? props.time : new Date();
   }
 
   /**
@@ -56,7 +56,7 @@ export default class TonalClockFace extends Component {
 
     // Set and increment the clock time by one second.
     this.interval = setInterval(() => {
-      this.now.setSeconds(this.now.getSeconds() + 1);
+      this.time.setSeconds(this.time.getSeconds() + 1);
       this.forceUpdate();
     }, 1000 );
   }
@@ -67,7 +67,7 @@ export default class TonalClockFace extends Component {
 
   render() {
     return <Clock 
-    value={this.now}
+    value={this.time}
     size={500}
     renderNumbers={true}
     className="tonal-clock-face"
